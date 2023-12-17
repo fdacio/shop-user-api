@@ -3,6 +3,7 @@ package br.com.daciosoftware.shop.user.controller;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,17 +18,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.daciosoftware.shop.user.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.UserDTO;
 import br.com.daciosoftware.shop.user.service.UserService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/user")
-@RequiredArgsConstructor
 public class UserController {
 
-	private final UserService userService;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping
 	public List<UserDTO> getAll() {

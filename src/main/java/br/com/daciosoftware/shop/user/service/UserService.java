@@ -5,20 +5,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.daciosoftware.shop.user.dto.UserDTO;
-import br.com.daciosoftware.shop.user.entity.User;
+import br.com.daciosoftware.shop.modelos.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
-	private final UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	public List<UserDTO> getAll() {
 		List<User> usuarios = userRepository.findAll();
