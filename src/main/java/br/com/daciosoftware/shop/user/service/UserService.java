@@ -64,7 +64,7 @@ public class UserService {
 	}
 	
 	public List<UserDTO> findByNome(String nome) {
-		List<User> usuarios = userRepository.findByNomeContaining(nome);
+		List<User> usuarios = userRepository.findByNomeContainingIgnoreCase(nome);
 		return usuarios
 				.stream()
 				.map(UserDTO::convert)
@@ -74,7 +74,6 @@ public class UserService {
 	public UserDTO editUser(Long userId, UserDTO userDTO) {
 		Optional<User> userOptional = userRepository.findById(userId);
 		if (userOptional.isPresent()) {
-			System.err.println(userDTO);
 			User user = userOptional.get();
 			if ((userDTO.getEmail() != null) && !(user.getEmail().equals(userDTO.getEmail()))) {
 				user.setEmail(userDTO.getEmail());
