@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.daciosoftware.shop.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.UserDTO;
 import br.com.daciosoftware.shop.modelos.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
@@ -33,7 +34,7 @@ public class UserService {
 		if (user.isPresent()) {
 			return UserDTO.convert(user.get());
 		} else {
-			throw new RuntimeException("Usuário não encontrado");
+			throw new UserNotFoundException();
 		}
 		
 	}
@@ -50,7 +51,7 @@ public class UserService {
 			userRepository.delete(user.get());
 			return UserDTO.convert(user.get());
 		} else {
-			throw new RuntimeException("Usuário não encontrado");
+			throw new UserNotFoundException();
 		}
 	}
 	
@@ -59,7 +60,7 @@ public class UserService {
 		if (user != null) {
 			return UserDTO.convert(user);
 		} else {
-			throw new RuntimeException("Usuário não encontrado");
+			throw new UserNotFoundException();
 		}
 	}
 	
@@ -87,7 +88,7 @@ public class UserService {
 			user = userRepository.save(user);			
 			return UserDTO.convert(user);
 		} else {
-			throw new RuntimeException("Usuário não encontrado");
+			throw new UserNotFoundException();
 		}
 	}
 	
