@@ -3,6 +3,7 @@ package br.com.daciosoftware.shop.user.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,9 @@ public class UserService {
 	
 	public UserDTO save(UserDTO userDTO) {
 		userDTO.setDataCadastro(LocalDateTime.now());
-		User user = userRepository.save(User.convert(userDTO));
-		return UserDTO.convert(user);
+		User user = User.convert(userDTO);
+		user.setKey(UUID.randomUUID().toString());
+		return UserDTO.convert(userRepository.save(user));
 	}
 	
 	public UserDTO delete(Long userId) {
