@@ -2,7 +2,6 @@ package br.com.daciosoftware.shop.user.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,101 +21,65 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
-	public List<UserDTO> getAll() {
-		List<User> usuarios = userRepository.findAll();
-		return usuarios
-				.stream()
-				.map(UserDTO::convert)
+
+	public List<UserDTO> findAll() {
+		return userRepository.findAll().stream().map(UserDTO::convert).collect(Collectors.toList());
+	}
+
+	public UserDTO findById(Long userId) {
+		return userRepository.findById(userId).map(UserDTO::convert).orElseThrow(UserNotFoundException::new);
+	}
+
+	public List<UserDTO> findByNome(String nome) {
+		return userRepository.findByNomeContainingIgnoreCase(nome).stream().map(UserDTO::convert)
 				.collect(Collectors.toList());
 	}
-	
-	public UserDTO findById(Long userId) {
-		Optional<User> user = userRepository.findById(userId);
-		if (user.isPresent()) {
-			return UserDTO.convert(user.get());
-		} else {
-			throw new UserNotFoundException();
-		}
+
+	public UserDTO findByCpf(String cpf) {
+		return userRepository.findByCpf(cpf).map(UserDTO::convert).orElseThrow(UserNotFoundException::new);
 	}
-	
+
 	public UserDTO save(UserDTO userDTO) {
 		userDTO.setDataCadastro(LocalDateTime.now());
-		User user = User.convert(userDTO);
-		user.setKey(UUID.randomUUID().toString());
-		return UserDTO.convert(userRepository.save(user));
+		userDTO.setKey(UUID.randomUUID().toString());
+		User user = userRepository.save(User.convert(userDTO));
+		return UserDTO.convert(user);
 	}
-	
-	public UserDTO delete(Long userId) {
-		Optional<User> user = userRepository.findById(userId);
-		if (user.isPresent()) {
-			userRepository.delete(user.get());
-			return UserDTO.convert(user.get());
-		} else {
-			throw new UserNotFoundException();
-		}
+
+	public void delete(Long userId) {
+		userRepository.delete(User.convert(findById(userId)));
 	}
-	
-	public UserDTO findByCpf(String cpf) {
-		User user = userRepository.findByCpf(cpf);
-		if (user != null) {
-			return UserDTO.convert(user);
-		} else {
-			throw new UserNotFoundException();
-		}
-	}
-	
-	public List<UserDTO> findByNome(String nome) {
-		List<User> usuarios = userRepository.findByNomeContainingIgnoreCase(nome);
-		return usuarios
-				.stream()
-				.map(UserDTO::convert)
-				.collect(Collectors.toList());
-	}
-	
+
 	public UserDTO editUser(Long userId, UserDTO userDTO) {
-		Optional<User> userOptional = userRepository.findById(userId);
-		if (userOptional.isPresent()) {
-			User user = userOptional.get();
-			if ((userDTO.getEmail() != null) && !(user.getEmail().equals(userDTO.getEmail()))) {
-				user.setEmail(userDTO.getEmail());
-			}
-			if ((userDTO.getTelefone() != null) && !(user.getTelefone().equals(userDTO.getTelefone()))) {
-				user.setTelefone(userDTO.getTelefone());
-			}
-			if ((userDTO.getEndereco() != null) && !(user.getEndereco().equals(userDTO.getEndereco()))) {
-				user.setEndereco(userDTO.getEndereco());
-			}
-			user = userRepository.save(user);			
-			return UserDTO.convert(user);
-		} else {
-			throw new UserNotFoundException();
+		User user = User.convert(findById(userId));
+		if ((userDTO.getEmail() != null) && !(user.getEmail().equals(userDTO.getEmail()))) {
+			user.setEmail(userDTO.getEmail());
 		}
+		if ((userDTO.getTelefone() != null) && !(user.getTelefone().equals(userDTO.getTelefone()))) {
+			user.setTelefone(userDTO.getTelefone());
+		}
+		if ((userDTO.getEndereco() != null) && !(user.getEndereco().equals(userDTO.getEndereco()))) {
+			user.setEndereco(userDTO.getEndereco());
+		}
+		user = userRepository.save(user);
+		return UserDTO.convert(user);
 	}
-	
+
 	public Page<UserDTO> getAllPage(Pageable page) {
-		Page<User> usuarios = userRepository.findAll(page);
-		return usuarios.map(UserDTO::convert);
+		return userRepository.findAll(page).map(UserDTO::convert);
 	}
-	
+
 	public List<UserDTO> updateKeyAll() {
 		List<User> usuarios = userRepository.findAll();
-		return usuarios
-				.stream()
-				.map(u -> {
-					u.setKey(UUID.randomUUID().toString());
-					u = userRepository.save(u);
-					return UserDTO.convert(u);
-				})
-				.collect(Collectors.toList());
+		return usuarios.stream().map(u -> {
+			u.setKey(UUID.randomUUID().toString());
+			u = userRepository.save(u);
+			return UserDTO.convert(u);
+		}).collect(Collectors.toList());
 	}
-	
+
 	public UserDTO validUserKey(UserDTO userDTO, String key) {
-		Optional<User> user = userRepository.findByIdAndKey(userDTO.getId(), key);
-		if (user.isPresent()) {
-			return UserDTO.convert(user.get());
-		} else {
-			throw new InvalidUserKeyException();
-		}
+		return userRepository.findByIdAndKey(userDTO.getId(), key).map(UserDTO::convert)
+				.orElseThrow(InvalidUserKeyException::new);
 	}
 }

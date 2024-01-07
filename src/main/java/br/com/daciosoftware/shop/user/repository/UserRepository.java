@@ -11,7 +11,7 @@ import br.com.daciosoftware.shop.modelos.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	
-	User findByCpf(String cpf);
+	Optional<User> findByCpf(String cpf);
 	
 	List<User> findByNomeContainingIgnoreCase(String nome);
 	

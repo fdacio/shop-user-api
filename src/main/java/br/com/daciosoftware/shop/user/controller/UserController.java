@@ -1,6 +1,5 @@
 package br.com.daciosoftware.shop.user.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,8 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public List<UserDTO> getAll() {
-		return userService.getAll();
+	public List<UserDTO> findAll() {
+		return userService.findAll();
 	}
 	
 	@GetMapping("/{id}")
@@ -43,7 +42,6 @@ public class UserController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserDTO save(@RequestBody @Valid UserDTO userDTO) {
-		userDTO.setDataCadastro(LocalDateTime.now());
 		return userService.save(userDTO);
 	}
 	
@@ -54,7 +52,7 @@ public class UserController {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) throws RuntimeException {
+	public void delete(@PathVariable Long id) {
 		userService.delete(id);
 	}
 	
