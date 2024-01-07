@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.daciosoftware.shop.exceptions.InvalidUserKeyException;
 import br.com.daciosoftware.shop.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.UserDTO;
 import br.com.daciosoftware.shop.modelos.entity.User;
@@ -37,7 +38,6 @@ public class UserService {
 		} else {
 			throw new UserNotFoundException();
 		}
-		
 	}
 	
 	public UserDTO save(UserDTO userDTO) {
@@ -97,5 +97,26 @@ public class UserService {
 	public Page<UserDTO> getAllPage(Pageable page) {
 		Page<User> usuarios = userRepository.findAll(page);
 		return usuarios.map(UserDTO::convert);
+	}
+	
+	public List<UserDTO> updateKeyAll() {
+		List<User> usuarios = userRepository.findAll();
+		return usuarios
+				.stream()
+				.map(u -> {
+					u.setKey(UUID.randomUUID().toString());
+					u = userRepository.save(u);
+					return UserDTO.convert(u);
+				})
+				.collect(Collectors.toList());
+	}
+	
+	public UserDTO validUserKey(UserDTO userDTO, String key) {
+		Optional<User> user = userRepository.findByIdAndKey(userDTO.getId(), key);
+		if (user.isPresent()) {
+			return UserDTO.convert(user.get());
+		} else {
+			throw new InvalidUserKeyException();
+		}
 	}
 }
