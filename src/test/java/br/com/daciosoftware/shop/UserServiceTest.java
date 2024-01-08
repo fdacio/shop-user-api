@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.api.iterable.ThrowingExtractor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.daciosoftware.shop.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.UserDTO;
 import br.com.daciosoftware.shop.modelos.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
@@ -56,9 +54,21 @@ public class UserServiceTest {
 	}
 	
 	@Test
+	public void testFindByIdUser() {		
+		
+		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");
+		
+		Mockito.when(userRepository.findById(2L)).thenReturn(Optional.of(user));
+		
+		UserDTO userReturn = userService.findById(2L);
+		
+		Assertions.assertEquals("Francisco Dacio M B Silva", userReturn.getNome());;
+	}
+	
+	@Test
 	public void testFindUserCpf() {
 		
-		User user = getUser(3L, "Francisco Dacio M B Silva9", "80978380363");
+		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");
 		
 		Mockito.when(userRepository.findByCpf("80978380363")).thenReturn(Optional.of(user));
 		
