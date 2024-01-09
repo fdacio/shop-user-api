@@ -50,16 +50,16 @@ public class UserService {
 		userRepository.delete(User.convert(findById(userId)));
 	}
 
-	public UserDTO editUser(Long userId, UserDTO userDTO) {
+	public UserDTO update(Long userId, UserDTO userDTO) {
 		User user = User.convert(findById(userId));
+		if ((userDTO.getEndereco() != null) && !(user.getEndereco().equals(userDTO.getEndereco()))) {
+			user.setEndereco(userDTO.getEndereco());
+		}
 		if ((userDTO.getEmail() != null) && !(user.getEmail().equals(userDTO.getEmail()))) {
 			user.setEmail(userDTO.getEmail());
 		}
 		if ((userDTO.getTelefone() != null) && !(user.getTelefone().equals(userDTO.getTelefone()))) {
 			user.setTelefone(userDTO.getTelefone());
-		}
-		if ((userDTO.getEndereco() != null) && !(user.getEndereco().equals(userDTO.getEndereco()))) {
-			user.setEndereco(userDTO.getEndereco());
 		}
 		user = userRepository.save(user);
 		return UserDTO.convert(user);

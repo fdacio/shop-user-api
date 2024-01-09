@@ -62,8 +62,8 @@ public class UserController {
 	}
 	
 	@PatchMapping("/{id}")
-	public UserDTO editUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-		return userService.editUser(id, userDTO);
+	public UserDTO update(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+		return userService.update(id, userDTO);
 	}
 	
 	@GetMapping("/pageable")
