@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.daciosoftware.shop.exceptions.InvalidUserKeyException;
 import br.com.daciosoftware.shop.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.Category;
 import br.com.daciosoftware.shop.modelos.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
 
@@ -60,6 +61,9 @@ public class UserService {
 		}
 		if ((userDTO.getTelefone() != null) && !(user.getTelefone().equals(userDTO.getTelefone()))) {
 			user.setTelefone(userDTO.getTelefone());
+		}
+		if ((userDTO.getInteresses() != null)) {
+			user.setInteresses(userDTO.getInteresses().stream().map(Category::convert).collect(Collectors.toList()));
 		}
 		user = userRepository.save(user);
 		return UserDTO.convert(user);
