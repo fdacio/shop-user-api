@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.daciosoftware.shop.exceptions.InvalidUserKeyException;
 import br.com.daciosoftware.shop.exceptions.UserNotFoundException;
-import br.com.daciosoftware.shop.modelos.dto.UserDTO;
-import br.com.daciosoftware.shop.modelos.entity.Category;
-import br.com.daciosoftware.shop.modelos.entity.User;
+import br.com.daciosoftware.shop.product.entity.Category;
+import br.com.daciosoftware.shop.user.dto.UserDTO;
+import br.com.daciosoftware.shop.user.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
 
 @Service

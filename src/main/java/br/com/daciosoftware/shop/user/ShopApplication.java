@@ -7,9 +7,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories("br.com.daciosoftware.shop.*")
-@ComponentScan(basePackages = { "br.com.daciosoftware.shop.*" })
-@EntityScan("br.com.daciosoftware.shop.modelos.*")  
+@EnableJpaRepositories(basePackages = { "br.com.daciosoftware.shop.user.repository", "br.com.daciosoftware.shop.product.repository" })
+@ComponentScan(basePackages = { "br.com.daciosoftware.shop.user*", "br.com.daciosoftware.shop.exceptions.*" })
+@EntityScan(basePackages = { "br.com.daciosoftware.shop.user.entity", "br.com.daciosoftware.shop.product.entity"  })
+
 public class ShopApplication {
 
 	public static void main(String[] args) {
