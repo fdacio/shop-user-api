@@ -22,8 +22,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@CPFUserUnique
-@EmailUserUnique
 public class UserDTO {
 
 	private Long id;
@@ -35,6 +33,7 @@ public class UserDTO {
 	@NotBlank(message="Informe o CPF")
 	@Size(message="CPF tem que ter no máximo 11 caracteres", max = 11)
 	@CPF
+	@CPFUserUnique
 	private String cpf;
 	
 	@NotBlank(message="Informe o endereço")
@@ -43,6 +42,7 @@ public class UserDTO {
 	
 	@NotBlank(message="Informe o email")
 	@Size(message="Email tem que ter no máximo 100 caracteres", max = 100)
+	@EmailUserUnique
 	private String email;
 	
 	@NotBlank(message="Informe o telefone")

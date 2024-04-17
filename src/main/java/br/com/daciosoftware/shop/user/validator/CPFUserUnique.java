@@ -10,7 +10,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Constraint(validatedBy = { CPFUserUniqueValidator.class })
-@Target({ ElementType.TYPE })
+@Target({ ElementType.FIELD, ElementType.TYPE })
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
 public @interface CPFUserUnique {
@@ -20,5 +20,7 @@ public @interface CPFUserUnique {
 	Class<?>[] groups() default { };
 
 	Class<? extends Payload>[] payload() default { };
+	
+	public long id() default 0;
 	
 }

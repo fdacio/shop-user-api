@@ -5,22 +5,28 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.daciosoftware.shop.exceptions.UserEmailExistsException;
-import br.com.daciosoftware.shop.user.dto.UserDTO;
 import br.com.daciosoftware.shop.user.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class EmailUserUniqueValidator implements ConstraintValidator<EmailUserUnique, UserDTO> {
+public class EmailUserUniqueValidator implements ConstraintValidator<EmailUserUnique, String> {
 
 	@Autowired
 	UserRepository userRepository;
 
+	private Long id = null;
+	
 	@Override
-	public boolean isValid(UserDTO userDTO, ConstraintValidatorContext context) {
+	public void initialize(EmailUserUnique annotation) {
+		if (annotation.id() != 0) {
+			this.id = (Long)(annotation.id());
+		}
+	}
 
-		String email = userDTO.getEmail();
-		Long id = userDTO.getId();
+	
+	@Override
+	public boolean isValid(String email, ConstraintValidatorContext context) {
 
 		boolean result = true;
 

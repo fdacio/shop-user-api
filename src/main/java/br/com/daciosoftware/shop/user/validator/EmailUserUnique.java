@@ -10,7 +10,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Constraint(validatedBy = { EmailUserUniqueValidator.class })
-@Target({ ElementType.TYPE, ElementType.PARAMETER })
+@Target({ ElementType.FIELD, ElementType.TYPE })
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
 public @interface EmailUserUnique {
@@ -21,4 +21,5 @@ public @interface EmailUserUnique {
 
 	Class<? extends Payload>[] payload() default { };
 	
+	public long id() default 0;
 }
