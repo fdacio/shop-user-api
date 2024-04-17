@@ -15,11 +15,10 @@ import jakarta.validation.Payload;
 @Documented
 public @interface EmailUserUnique {
 	
-	String message() default "";
+	String message() default "Email já existe";
 	
 	Class<?>[] groups() default { };
 
-	Class<? extends Payload>[] payload() default { };
-	
-	public long id() default 0;
+	Class<? extends Payload>[] payload() default { };	
+
 }

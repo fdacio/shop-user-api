@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.daciosoftware.shop.exceptions.InvalidUserKeyException;
+import br.com.daciosoftware.shop.exceptions.UserEmailExistsException;
 import br.com.daciosoftware.shop.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.product.entity.Category;
 import br.com.daciosoftware.shop.user.dto.UserDTO;
@@ -52,6 +53,12 @@ public class UserService {
 				.map(UserDTO::convert)
 				.orElseThrow(UserNotFoundException::new);
 	}
+	
+	public UserDTO findByEmail(String email) {
+		return userRepository.findByEmail(email)
+				.map(UserDTO::convert)
+				.orElseThrow(UserNotFoundException::new);
+	}
 
 	public UserDTO save(UserDTO userDTO) {
 		userDTO.setDataCadastro(LocalDateTime.now());
@@ -73,6 +80,10 @@ public class UserService {
 			user.setEndereco(userDTO.getEndereco());
 		}
 		if ((userDTO.getEmail() != null) && !(user.getEmail().equals(userDTO.getEmail()))) {
+			UserDTO userOther = findByEmail(userDTO.getEmail());
+			if (userOther != null && userOther.getId() != userId) {
+				throw  new UserEmailExistsException();
+			}
 			user.setEmail(userDTO.getEmail());
 		}
 		if ((userDTO.getTelefone() != null) && !(user.getTelefone().equals(userDTO.getTelefone()))) {

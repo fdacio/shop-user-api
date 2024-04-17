@@ -15,12 +15,10 @@ import jakarta.validation.Payload;
 @Documented
 public @interface CPFUserUnique {
 	
-	String message() default "";
+	String message() default "CPF já existe";
 	
 	Class<?>[] groups() default { };
 
 	Class<? extends Payload>[] payload() default { };
-	
-	public long id() default 0;
 	
 }
