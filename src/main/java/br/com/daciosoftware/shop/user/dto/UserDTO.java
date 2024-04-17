@@ -7,19 +7,23 @@ import java.util.stream.Collectors;
 import br.com.daciosoftware.shop.product.dto.CategoryDTO;
 import br.com.daciosoftware.shop.user.entity.User;
 import br.com.daciosoftware.shop.user.validator.CPF;
-import br.com.daciosoftware.shop.user.validator.CPFUserExists;
+import br.com.daciosoftware.shop.user.validator.CPFUserUnique;
+import br.com.daciosoftware.shop.user.validator.EmailUserUnique;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@CPFUserExists
+@ToString
+@CPFUserUnique
+@EmailUserUnique
 public class UserDTO {
 
 	private Long id;
@@ -63,12 +67,6 @@ public class UserDTO {
 		if (user.getInteresses() != null)
 			userDTO.setInteresses(user.getInteresses().stream().map(CategoryDTO::convert).collect(Collectors.toList()));
 		return userDTO;
-	}
-
-	@Override
-	public String toString() {
-		return "UserDTO [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", endereco=" + endereco + ", email=" + email
-				+ ", telefone=" + telefone + ", dataCadastro=" + dataCadastro + "]";
 	}
 	
 }

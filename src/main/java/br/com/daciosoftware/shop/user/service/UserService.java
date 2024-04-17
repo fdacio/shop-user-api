@@ -1,6 +1,7 @@
 package br.com.daciosoftware.shop.user.service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,27 +23,40 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private CategoryService categoryService;
 
 	public List<UserDTO> findAll() {
-		return userRepository.findAll().stream().map(UserDTO::convert).collect(Collectors.toList());
+		return userRepository.findAll()
+				.stream()
+				.sorted(Comparator.comparing(User::getNome))
+				.map(UserDTO::convert)
+				.collect(Collectors.toList());	
 	}
 
 	public UserDTO findById(Long userId) {
-		return userRepository.findById(userId).map(UserDTO::convert).orElseThrow(UserNotFoundException::new);
+		return userRepository.findById(userId)
+				.map(UserDTO::convert)
+				.orElseThrow(UserNotFoundException::new);
 	}
 
 	public List<UserDTO> findByNome(String nome) {
-		return userRepository.findByNomeContainingIgnoreCase(nome).stream().map(UserDTO::convert)
+		return userRepository.findByNomeContainingIgnoreCase(nome)
+				.stream()
+				.map(UserDTO::convert)
 				.collect(Collectors.toList());
 	}
 
 	public UserDTO findByCpf(String cpf) {
-		return userRepository.findByCpf(cpf).map(UserDTO::convert).orElseThrow(UserNotFoundException::new);
+		return userRepository.findByCpf(cpf)
+				.map(UserDTO::convert)
+				.orElseThrow(UserNotFoundException::new);
 	}
 
 	public UserDTO save(UserDTO userDTO) {
 		userDTO.setDataCadastro(LocalDateTime.now());
 		userDTO.setKey(UUID.randomUUID().toString());
+		userDTO.setInteresses(categoryService.findCategorys(userDTO));
 		User user = userRepository.save(User.convert(userDTO));
 		return UserDTO.convert(user);
 	}
@@ -52,7 +66,9 @@ public class UserService {
 	}
 
 	public UserDTO update(Long userId, UserDTO userDTO) {
+		
 		User user = User.convert(findById(userId));
+		
 		if ((userDTO.getEndereco() != null) && !(user.getEndereco().equals(userDTO.getEndereco()))) {
 			user.setEndereco(userDTO.getEndereco());
 		}
@@ -63,6 +79,7 @@ public class UserService {
 			user.setTelefone(userDTO.getTelefone());
 		}
 		if ((userDTO.getInteresses() != null)) {
+			userDTO.setInteresses(categoryService.findCategorys(userDTO));
 			user.setInteresses(userDTO.getInteresses().stream().map(Category::convert).collect(Collectors.toList()));
 		}
 		user = userRepository.save(user);

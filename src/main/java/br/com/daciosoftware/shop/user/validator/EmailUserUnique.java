@@ -9,13 +9,13 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
-@Constraint(validatedBy = { CPFUserExistsValidator.class })
-@Target({ ElementType.TYPE })
+@Constraint(validatedBy = { EmailUserUniqueValidator.class })
+@Target({ ElementType.TYPE, ElementType.PARAMETER })
 @Retention(value = RetentionPolicy.RUNTIME)
 @Documented
-public @interface CPFUserExists {
+public @interface EmailUserUnique {
 	
-	String message() default "CPF já existe***";
+	String message() default "";
 	
 	Class<?>[] groups() default { };
 

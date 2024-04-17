@@ -11,7 +11,7 @@ import br.com.daciosoftware.shop.user.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class CPFUserExistsValidator implements ConstraintValidator<CPFUserExists, UserDTO> {
+public class CPFUserUniqueValidator implements ConstraintValidator<CPFUserUnique, UserDTO> {
 
 	@Autowired
 	UserRepository userRepository;
@@ -22,7 +22,7 @@ public class CPFUserExistsValidator implements ConstraintValidator<CPFUserExists
 		String cpf = userDTO.getCpf();
 		Long id = userDTO.getId();
 		
-		boolean result = false;
+		boolean result = true;
 		
 		if (id == null) {
 			

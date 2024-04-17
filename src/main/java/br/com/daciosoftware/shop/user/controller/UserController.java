@@ -63,6 +63,7 @@ public class UserController {
 	
 	@PatchMapping("/{id}")
 	public UserDTO update(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+		System.err.println(userDTO);
 		return userService.update(id, userDTO);
 	}
 	

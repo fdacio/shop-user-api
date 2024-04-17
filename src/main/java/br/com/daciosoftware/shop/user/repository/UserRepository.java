@@ -12,8 +12,7 @@ import br.com.daciosoftware.shop.user.entity.User;
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 	Optional<User> findByCpf(String cpf);
-	
 	List<User> findByNomeContainingIgnoreCase(String nome);
-	
 	Optional<User> findByIdAndKey(Long id, String key);
+	Optional<User> findByEmail(String email);
 }
