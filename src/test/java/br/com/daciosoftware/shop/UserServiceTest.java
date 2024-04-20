@@ -12,9 +12,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.daciosoftware.shop.user.dto.UserDTO;
-import br.com.daciosoftware.shop.user.entity.User;
+import br.com.daciosoftware.shop.modelos.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
+import br.com.daciosoftware.shop.user.service.CategoryService;
 import br.com.daciosoftware.shop.user.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +26,9 @@ public class UserServiceTest {
 	
 	@Mock
 	private UserRepository userRepository;
+
+	@Mock
+	private CategoryService categoryService;
 	
 	public static User getUser(Long id, String nome, String cpf) {
 		User user = new User();
@@ -58,11 +62,11 @@ public class UserServiceTest {
 		
 		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");
 		
-		Mockito.when(userRepository.findById(2L)).thenReturn(Optional.of(user));
+		Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(user));
 		
-		UserDTO userReturn = userService.findById(2L);
+		UserDTO userReturn = userService.findById(3L);
 		
-		Assertions.assertEquals("Francisco Dacio M B Silva", userReturn.getNome());;
+		Assertions.assertEquals(3L, userReturn.getId());
 	}
 	
 	@Test
@@ -70,10 +74,45 @@ public class UserServiceTest {
 		
 		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");
 		
+		
 		Mockito.when(userRepository.findByCpf("80978380363")).thenReturn(Optional.of(user));
 		
 		UserDTO userReturn = userService.findByCpf("80978380363");
 		
+		Assertions.assertEquals("80978380363", userReturn.getCpf());
+	}
+	
+	@Test
+	public void testSaveUser() {
+		
+		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");	
+		
+		UserDTO userDTO = UserDTO.convert(user);
+		
+		Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+		
+		UserDTO userReturn = userService.save(userDTO);
+		
 		Assertions.assertEquals("Francisco Dacio M B Silva", userReturn.getNome());
+		Assertions.assertEquals("80978380363", userReturn.getCpf());
+		
+	}
+	
+	@Test void testUpdateUser() {
+		
+		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");
+		
+		Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(user));
+		Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+		
+		user.setEmail("fdacio@gmail.com");
+		user.setEndereco("Rua Guaporé, 956");
+		
+		UserDTO userDTO = UserDTO.convert(user);
+		UserDTO userReturn = userService.update(3L, userDTO);
+		
+		Assertions.assertEquals("Rua Guaporé, 956", userReturn.getEndereco());
+		Assertions.assertEquals("fdacio@gmail.com", userReturn.getEmail());
+		
 	}
 }

@@ -6,67 +6,51 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.4</version>
+		<version>3.2.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
+
 	</parent>
 	<groupId>br.com.daciosoftware</groupId>
 	<artifactId>shop-user-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>shop-user-api</name>
+	<packaging>jar</packaging>
 	<description>Project Shop do Livro Java Back-End</description>
 	<properties>
+		<shop-exceptions-scope>import</shop-exceptions-scope>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-		
 		<dependency>
 			<groupId>br.com.daciosoftware</groupId>
 			<artifactId>shop-modelos</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>br.com.daciosoftware</groupId>
 			<artifactId>shop-exceptions</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>br.com.daciosoftware</groupId>
-			<artifactId>shop-product-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -75,5 +59,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

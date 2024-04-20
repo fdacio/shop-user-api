@@ -1,6 +1,7 @@
 package br.com.daciosoftware.shop.user.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.daciosoftware.shop.user.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.UserDTO;
 import br.com.daciosoftware.shop.user.service.UserService;
 import jakarta.validation.Valid;
 
@@ -46,9 +47,24 @@ public class UserController {
 	}
 	
 	@GetMapping("/{cpf}/cpf")
-	public UserDTO findById(@PathVariable String cpf) {
+	public UserDTO findByCpf(@PathVariable String cpf) {
 		return userService.findByCpf(cpf);
 	}
+	
+	@GetMapping("/{email}/email")
+	public UserDTO findByEmail(@PathVariable String email) {
+		return userService.findByEmail(email);
+	}
+	
+	@GetMapping("/cpf/{cpf}")
+	public Optional<UserDTO> findByCpfUnique(@PathVariable String cpf) {
+		return userService.findByCpfUnique(cpf);
+	}
+	
+	@GetMapping("/email/{email}")
+	public Optional<UserDTO> findByEmailUnique(@PathVariable String email) {
+		return userService.findByEmailUnique(email);
+	}	
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
