@@ -8,7 +8,6 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
-
 	</parent>
 	<groupId>br.com.daciosoftware</groupId>
 	<artifactId>shop-user-api</artifactId>
