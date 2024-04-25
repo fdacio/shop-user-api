@@ -85,7 +85,7 @@ public class UserServiceTest {
 	@Test
 	public void testSaveUser() {
 		
-		User user = getUser(3L, "Francisco Dacio M B Silva", "80978380363");	
+		User user = getUser(null, "Francisco Dacio M B Silva", "80978380363");	
 		
 		UserDTO userDTO = UserDTO.convert(user);
 		

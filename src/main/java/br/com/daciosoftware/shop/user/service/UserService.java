@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.daciosoftware.shop.exceptions.exceptions.InvalidUserKeyException;
+import br.com.daciosoftware.shop.exceptions.exceptions.UserCpfExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserEmailExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.UserDTO;
@@ -61,22 +62,30 @@ public class UserService {
 				.orElseThrow(UserNotFoundException::new);
 	}
 	
-	public Optional<UserDTO> findByCpfUnique(String cpf) {
-		return userRepository.findByCpf(cpf)
-				.map(UserDTO::convert);
-
+	private void validCpfUnique(String cpf) {
+		Optional<UserDTO> userDTO = userRepository.findByCpf(cpf).map(UserDTO::convert);
+		if (userDTO.isPresent()) {
+			throw new UserCpfExistsException();
+		}
 	}
 	
-	public Optional<UserDTO> findByEmailUnique(String email) {
-		return userRepository.findByEmail(email)
-				.map(UserDTO::convert);
+	private void validEmailUnique(String email, Long id) {
+		Optional<UserDTO> userDTO = userRepository.findByEmail(email).map(UserDTO::convert);
+		if (userDTO.isPresent()) {
+			if (id == null) {
+				throw new UserEmailExistsException();
+			} else if (id != userDTO.get().getId()) {
+				throw new UserEmailExistsException();
+			}
+		}
 	}
-
 
 	public UserDTO save(UserDTO userDTO) {
 		userDTO.setDataCadastro(LocalDateTime.now());
 		userDTO.setKey(UUID.randomUUID().toString());
 		userDTO.setInteresses(categoryService.findCategorys(userDTO));
+		validCpfUnique(userDTO.getCpf());
+		validEmailUnique(userDTO.getEmail(), null);
 		return UserDTO.convert(userRepository.save(User.convert(userDTO)));
 	}
 
@@ -98,12 +107,7 @@ public class UserService {
 		if (userDTO.getEmail() != null) { 
 			boolean isEmailAlterado = !(user.getEmail().equals(userDTO.getEmail()));
 			if (isEmailAlterado) {
-				Optional<UserDTO> userOther = findByEmailUnique(userDTO.getEmail());
-				if (userOther.isPresent()) {
-					if (userOther.get().getId() != userId) {
-						throw new UserEmailExistsException();
-					}
-				}
+				validEmailUnique(userDTO.getEmail(), userId);
 				user.setEmail(userDTO.getEmail());
 			}
 		}
@@ -140,4 +144,5 @@ public class UserService {
 		return userRepository.findByIdAndKey(userDTO.getId(), key).map(UserDTO::convert)
 				.orElseThrow(InvalidUserKeyException::new);
 	}
+
 }
