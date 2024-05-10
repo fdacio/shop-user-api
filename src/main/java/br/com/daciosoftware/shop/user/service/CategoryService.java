@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import br.com.daciosoftware.shop.exceptions.exceptions.CategoryNotFoundException;
-import br.com.daciosoftware.shop.modelos.dto.CategoryDTO;
-import br.com.daciosoftware.shop.modelos.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.product.CategoryDTO;
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
 import reactor.core.publisher.Mono;
 
 @Service

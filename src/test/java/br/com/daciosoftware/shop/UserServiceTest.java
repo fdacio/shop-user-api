@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.daciosoftware.shop.modelos.dto.UserDTO;
-import br.com.daciosoftware.shop.modelos.entity.User;
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.user.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
 import br.com.daciosoftware.shop.user.service.CategoryService;
 import br.com.daciosoftware.shop.user.service.UserService;

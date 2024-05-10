@@ -16,9 +16,9 @@ import br.com.daciosoftware.shop.exceptions.exceptions.InvalidUserKeyException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserCpfExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserEmailExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserNotFoundException;
-import br.com.daciosoftware.shop.modelos.dto.UserDTO;
-import br.com.daciosoftware.shop.modelos.entity.Category;
-import br.com.daciosoftware.shop.modelos.entity.User;
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.product.Category;
+import br.com.daciosoftware.shop.modelos.entity.user.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
 
 @Service

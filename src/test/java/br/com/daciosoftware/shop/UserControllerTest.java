@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.daciosoftware.shop.modelos.dto.UserDTO;
-import br.com.daciosoftware.shop.modelos.entity.User;
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.user.User;
 import br.com.daciosoftware.shop.user.controller.UserController;
 import br.com.daciosoftware.shop.user.service.UserService;
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.daciosoftware.shop.modelos.dto.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
 import br.com.daciosoftware.shop.user.service.UserService;
 import jakarta.validation.Valid;
 
