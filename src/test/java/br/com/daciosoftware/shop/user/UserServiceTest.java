@@ -1,4 +1,4 @@
-package br.com.daciosoftware.shop;
+package br.com.daciosoftware.shop.user;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -36,6 +36,7 @@ public class CategoryService {
 							.bodyToMono(CategoryDTO.class);
 					categorysDTO.add(category.block());
 				} catch (Exception e) {
+					e.printStackTrace();
 					throw new CategoryNotFoundException();
 				}
 			}
