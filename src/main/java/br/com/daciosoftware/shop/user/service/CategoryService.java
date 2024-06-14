@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -18,7 +19,7 @@ public class CategoryService {
 	@Value("${product.api.url}")
 	private String productApiURL;
 
-	public List<CategoryDTO> findCategorys(UserDTO userDTO) {
+	public List<CategoryDTO> findCategorysByUser(UserDTO userDTO) {
 
 		List<CategoryDTO> categorysDTO = new ArrayList<>();
 
@@ -36,12 +37,26 @@ public class CategoryService {
 							.bodyToMono(CategoryDTO.class);
 					categorysDTO.add(category.block());
 				} catch (Exception e) {
-					e.printStackTrace();
 					throw new CategoryNotFoundException();
 				}
 			}
 		}
 
 		return categorysDTO;
+	}
+
+	public List<CategoryDTO> findAll() {
+
+		WebClient webClient = WebClient.builder().baseUrl(productApiURL).build();
+		try {
+			Mono<List<CategoryDTO>> response = webClient
+					.get()
+					.uri("/category")
+					.retrieve()
+					.bodyToMono(new ParameterizedTypeReference<List<CategoryDTO>>() {});
+			return response.block();
+		} catch (Exception e) {
+			throw new CategoryNotFoundException();
+		}
 	}
 }

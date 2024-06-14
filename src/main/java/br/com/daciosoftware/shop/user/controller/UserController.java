@@ -1,6 +1,7 @@
 package br.com.daciosoftware.shop.user.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.user.UserSimpleDTO;
 import br.com.daciosoftware.shop.user.service.UserService;
 import jakarta.validation.Valid;
 
@@ -84,5 +86,10 @@ public class UserController {
 	@PostMapping("/valid")
 	public UserDTO validUser(@RequestBody UserDTO userDTO, @RequestHeader(required = true) String key) {
 		return userService.validUserKey(userDTO, key);
+	}
+	
+	@GetMapping("/by-category")
+	public Map<String, List<UserSimpleDTO>> getUsersGroupByCategory() {
+		return userService.getUsersGroupByCategory();
 	}
 }

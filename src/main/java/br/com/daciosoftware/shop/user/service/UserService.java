@@ -1,8 +1,11 @@
 package br.com.daciosoftware.shop.user.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -16,7 +19,9 @@ import br.com.daciosoftware.shop.exceptions.exceptions.InvalidUserKeyException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserCpfExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserEmailExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserNotFoundException;
+import br.com.daciosoftware.shop.modelos.dto.product.CategoryDTO;
 import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.user.UserSimpleDTO;
 import br.com.daciosoftware.shop.modelos.entity.product.Category;
 import br.com.daciosoftware.shop.modelos.entity.user.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
@@ -83,7 +88,7 @@ public class UserService {
 	public UserDTO save(UserDTO userDTO) {
 		userDTO.setDataCadastro(LocalDateTime.now());
 		userDTO.setKey(UUID.randomUUID().toString());
-		userDTO.setInteresses(categoryService.findCategorys(userDTO));
+		userDTO.setInteresses(categoryService.findCategorysByUser(userDTO));
 		validCpfUnique(userDTO.getCpf());
 		validEmailUnique(userDTO.getEmail(), null);
 		return UserDTO.convert(userRepository.save(User.convert(userDTO)));
@@ -120,7 +125,7 @@ public class UserService {
 		}
 		
 		if ((userDTO.getInteresses() != null)) {
-			userDTO.setInteresses(categoryService.findCategorys(userDTO));
+			userDTO.setInteresses(categoryService.findCategorysByUser(userDTO));
 			user.setInteresses(userDTO.getInteresses().stream().map(Category::convert).collect(Collectors.toList()));
 		}
 		
@@ -145,4 +150,35 @@ public class UserService {
 				.orElseThrow(InvalidUserKeyException::new);
 	}
 
+	public Map<String, List<UserSimpleDTO>> getUsersGroupByCategory() {
+		
+		Map<String, List<UserSimpleDTO>> groupByCategory = new HashMap<>();
+		
+		List<UserDTO> usuarios = findAll();
+		
+		List<CategoryDTO> categorias = categoryService.findAll();
+		
+		categorias.stream().forEach(c -> {
+
+			List<UserSimpleDTO> lista = new ArrayList<>();
+			
+			usuarios.stream().forEach(u -> {
+				
+				if (u.getInteresses().contains(c)) {
+					lista.add(UserDTO.convert(u));
+				}
+				
+			});
+			
+			if (lista.size() > 0) {
+				groupByCategory.put(c.getNome(), lista);
+			}
+			
+		});
+		
+		return groupByCategory;
+		
+		//return usuarios.stream().collect(Collectors.groupingBy(u -> u.getInteresses().stream().filter(c -> u.getInteresses().filter(c -> u.getInteresses().contains(c)).map(c))));
+		//return categorias.stream().collect(Collectors.groupingBy(c ->	usuarios.stream().forEach(u -> u.getInteresses().contains(c));
+	}
 }
