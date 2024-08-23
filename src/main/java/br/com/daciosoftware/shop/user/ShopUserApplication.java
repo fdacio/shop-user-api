@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("br.com.daciosoftware.shop.*")
 @ComponentScan(basePackages = { "br.com.daciosoftware.shop.*" })
 @EntityScan("br.com.daciosoftware.shop.modelos.*")  
-public class ShopApplication {
+public class ShopUserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ShopApplication.class, args);
+		SpringApplication.run(ShopUserApplication.class, args);
 	}
 
 }
