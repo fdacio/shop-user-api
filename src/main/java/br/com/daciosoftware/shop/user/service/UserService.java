@@ -34,7 +34,7 @@ public class UserService {
 	@Autowired
 	private CategoryService categoryService;
 
-	public List<UserDTO> findAll() {
+    public List<UserDTO> findAll() {
 		return userRepository.findAll()
 				.stream()
 				.sorted(Comparator.comparing(User::getId))
@@ -79,7 +79,7 @@ public class UserService {
 		if (userDTO.isPresent()) {
 			if (id == null) {
 				throw new UserEmailExistsException();
-			} else if (id != userDTO.get().getId()) {
+			} else if (!id.equals(userDTO.get().getId())) {
 				throw new UserEmailExistsException();
 			}
 		}
@@ -103,7 +103,7 @@ public class UserService {
 		User user = User.convert(findById(userId));
 		
 		if (userDTO.getEndereco() != null) { 
-			boolean isEnderecoAlterado = !(user.getEndereco().equals(userDTO.getEndereco())); 
+			boolean isEnderecoAlterado = !(user.getEndereco().equals(userDTO.getEndereco()));
 			if (isEnderecoAlterado) {
 				user.setEndereco(userDTO.getEndereco());
 			}
@@ -137,8 +137,8 @@ public class UserService {
 	}
 
 	public List<UserDTO> updateKeyAll() {
-		List<User> usuarios = userRepository.findAll();
-		return usuarios.stream().map(u -> {
+		List<User> users = userRepository.findAll();
+		return users.stream().map(u -> {
 			u.setKey(UUID.randomUUID().toString());
 			u = userRepository.save(u);
 			return UserDTO.convert(u);
@@ -154,24 +154,24 @@ public class UserService {
 		
 		Map<String, List<UserSimpleDTO>> groupByCategory = new HashMap<>();
 		
-		List<UserDTO> usuarios = findAll();
+		List<UserDTO> users = findAll();
 		
-		List<CategoryDTO> categorias = categoryService.findAll();
+		List<CategoryDTO> categories = categoryService.findAll();
 		
-		categorias.stream().forEach(c -> {
+		categories.forEach(c -> {
 
-			List<UserSimpleDTO> lista = new ArrayList<>();
+			List<UserSimpleDTO> list = new ArrayList<>();
 			
-			usuarios.stream().forEach(u -> {
+			users.forEach(u -> {
 				
 				if (u.getInteresses().contains(c)) {
-					lista.add(UserDTO.convert(u));
+					list.add(UserDTO.convert(u));
 				}
 				
 			});
 			
-			if (lista.size() > 0) {
-				groupByCategory.put(c.getNome(), lista);
+			if (!list.isEmpty()) {
+				groupByCategory.put(c.getNome(), list);
 			}
 			
 		});
