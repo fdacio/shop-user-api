@@ -59,13 +59,29 @@ public class UserControllerTest {
 
 		String resp = mvcResult.getResponse().getContentAsString();
 
-		Assertions.assertEquals("[" + "{" + "\"id\":1," + "\"nome\":\"Dacio Braga\"," + "\"cpf\":\"80978380363\","
-				+ "\"endereco\":\"Rua Alberto Torres, 200\"," + "\"email\":\"usuario@exemplo.com\","
-				+ "\"telefone\":\"(85) 9 9971-8151\"," + "\"key\":null," + "\"dataCadastro\":null,"
-				+ "\"interesses\":null" + "}," + "{" + "\"id\":2," + "\"nome\":\"Pedro Artur\","
-				+ "\"cpf\":\"09465998311\"," + "\"endereco\":\"Rua Alberto Torres, 200\","
-				+ "\"email\":\"usuario@exemplo.com\"," + "\"telefone\":\"(85) 9 9971-8151\"," + "\"key\":null,"
-				+ "\"dataCadastro\":null," + "\"interesses\":null" + "}" + "]", resp);
+		Assertions.assertEquals(
+	"["
+				+ "{"
+					+ "\"id\":1,"
+					+ "\"nome\":\"Dacio Braga\","
+					+ "\"cpf\":\"80978380363\","
+					+ "\"endereco\":\"Rua Alberto Torres, 200\","
+					+ "\"email\":\"usuario@exemplo.com\","
+					+ "\"telefone\":\"(85) 9 9971-8151\","
+					+ "\"dataCadastro\":null,"
+					+ "\"interesses\":null"
+				+ "},"
+				+ "{"
+					+ "\"id\":2,"
+					+ "\"nome\":\"Pedro Artur\","
+					+ "\"cpf\":\"09465998311\","
+					+ "\"endereco\":\"Rua Alberto Torres, 200\","
+					+ "\"email\":\"usuario@exemplo.com\","
+					+ "\"telefone\":\"(85) 9 9971-8151\","
+					+ "\"dataCadastro\":null,"
+					+ "\"interesses\":null"
+				+ "}"
+			+ "]", 	resp);
 
 	}
 
