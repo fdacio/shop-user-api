@@ -3,6 +3,7 @@ package br.com.daciosoftware.shop.user.controller;
 import java.util.List;
 import java.util.Map;
 
+import br.com.daciosoftware.shop.modelos.dto.user.UserWithKeyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
-import br.com.daciosoftware.shop.modelos.dto.user.UserSimpleDTO;
 import br.com.daciosoftware.shop.user.service.UserService;
 import jakarta.validation.Valid;
 
@@ -40,7 +40,11 @@ public class UserController {
 	public UserDTO findById(@PathVariable Long id) {
 		return userService.findById(id);
 	}
-		
+	@GetMapping("/{id}/with-key")
+	public UserWithKeyDTO findWithKeyById(@PathVariable Long id) {
+		return userService.findByIdWithKey(id);
+	}
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserDTO save(@RequestBody @Valid UserDTO userDTO) {
@@ -89,7 +93,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/by-category")
-	public Map<String, List<UserSimpleDTO>> getUsersGroupByCategory() {
+	public Map<String, List<UserDTO>> getUsersGroupByCategory() {
 		return userService.getUsersGroupByCategory();
 	}
 }

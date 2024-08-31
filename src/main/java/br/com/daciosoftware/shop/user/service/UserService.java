@@ -1,15 +1,10 @@
 package br.com.daciosoftware.shop.user.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import br.com.daciosoftware.shop.modelos.dto.user.UserWithKeyDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +16,6 @@ import br.com.daciosoftware.shop.exceptions.exceptions.UserEmailExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.product.CategoryDTO;
 import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
-import br.com.daciosoftware.shop.modelos.dto.user.UserSimpleDTO;
 import br.com.daciosoftware.shop.modelos.entity.product.Category;
 import br.com.daciosoftware.shop.modelos.entity.user.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
@@ -45,6 +39,12 @@ public class UserService {
 	public UserDTO findById(Long userId) {
 		return userRepository.findById(userId)
 				.map(UserDTO::convert)
+				.orElseThrow(UserNotFoundException::new);
+	}
+
+	public UserWithKeyDTO findByIdWithKey(Long userId) {
+		return userRepository.findById(userId)
+				.map(UserWithKeyDTO::convert)
 				.orElseThrow(UserNotFoundException::new);
 	}
 
@@ -86,11 +86,11 @@ public class UserService {
 	}
 
 	public UserDTO save(UserDTO userDTO) {
+		validCpfUnique(userDTO.getCpf());
+		validEmailUnique(userDTO.getEmail(), null);
 		userDTO.setDataCadastro(LocalDateTime.now());
 		userDTO.setKey(UUID.randomUUID().toString());
 		userDTO.setInteresses(categoryService.findCategorysByUser(userDTO));
-		validCpfUnique(userDTO.getCpf());
-		validEmailUnique(userDTO.getEmail(), null);
 		return UserDTO.convert(userRepository.save(User.convert(userDTO)));
 	}
 
@@ -125,8 +125,15 @@ public class UserService {
 		}
 		
 		if ((userDTO.getInteresses() != null)) {
+
 			userDTO.setInteresses(categoryService.findCategorysByUser(userDTO));
-			user.setInteresses(userDTO.getInteresses().stream().map(Category::convert).collect(Collectors.toList()));
+
+			List<Category> interesses = userDTO.getInteresses()
+					.stream()
+					.map(Category::convert)
+					.collect(Collectors.toList());
+
+			user.setInteresses(interesses);
 		}
 		
 		return UserDTO.convert(userRepository.save(user));
@@ -150,35 +157,32 @@ public class UserService {
 				.orElseThrow(InvalidUserKeyException::new);
 	}
 
-	public Map<String, List<UserSimpleDTO>> getUsersGroupByCategory() {
+	public Map<String, List<UserDTO>> getUsersGroupByCategory() {
 		
-		Map<String, List<UserSimpleDTO>> groupByCategory = new HashMap<>();
+		Map<String, List<UserDTO>> groupByCategory = new LinkedHashMap<>();
 		
 		List<UserDTO> users = findAll();
 		
 		List<CategoryDTO> categories = categoryService.findAll();
 		
-		categories.forEach(c -> {
+		categories.stream().sorted(Comparator.comparing(CategoryDTO::getId)).forEach(c -> {
 
-			List<UserSimpleDTO> list = new ArrayList<>();
+			List<UserDTO> listUsers = new ArrayList<>();
 			
 			users.forEach(u -> {
-				
 				if (u.getInteresses().contains(c)) {
-					list.add(UserDTO.convert(u));
+					listUsers.add(u);
 				}
-				
 			});
 			
-			if (!list.isEmpty()) {
-				groupByCategory.put(c.getNome(), list);
+			if (!listUsers.isEmpty()) {
+				String category = String.format("%d -> %s", c.getId(), c.getNome());
+				groupByCategory.put(category, listUsers);
 			}
-			
 		});
 		
 		return groupByCategory;
 		
-		//return usuarios.stream().collect(Collectors.groupingBy(u -> u.getInteresses().stream().filter(c -> u.getInteresses().filter(c -> u.getInteresses().contains(c)).map(c))));
-		//return categorias.stream().collect(Collectors.groupingBy(c ->	usuarios.stream().forEach(u -> u.getInteresses().contains(c));
 	}
+
 }
