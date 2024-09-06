@@ -68,7 +68,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/search")
-	public List<UserDTO> findByNone(@RequestParam(name = "nome", required = true) String nome) {
+	public List<UserDTO> findByNone(@RequestParam(name = "nome") String nome) {
 		return userService.findByNome(nome);
 	}
 	
@@ -88,7 +88,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/valid")
-	public UserDTO validUser(@RequestBody UserDTO userDTO, @RequestHeader(required = true) String key) {
+	public UserDTO validUser(@RequestBody UserDTO userDTO, @RequestHeader() String key) {
 		return userService.validUserKey(userDTO, key);
 	}
 	
