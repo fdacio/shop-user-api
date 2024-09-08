@@ -1,17 +1,16 @@
 package br.com.daciosoftware.shop.user.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import br.com.daciosoftware.shop.exceptions.exceptions.CategoryNotFoundException;
+import br.com.daciosoftware.shop.modelos.dto.product.CategoryDTO;
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import br.com.daciosoftware.shop.exceptions.exceptions.CategoryNotFoundException;
-import br.com.daciosoftware.shop.modelos.dto.product.CategoryDTO;
-import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
 import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CategoryService {

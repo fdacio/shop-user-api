@@ -1,9 +1,10 @@
 package br.com.daciosoftware.shop.user;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.entity.user.User;
+import br.com.daciosoftware.shop.user.repository.UserRepository;
+import br.com.daciosoftware.shop.user.service.CategoryService;
+import br.com.daciosoftware.shop.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,11 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
-import br.com.daciosoftware.shop.modelos.entity.user.User;
-import br.com.daciosoftware.shop.user.repository.UserRepository;
-import br.com.daciosoftware.shop.user.service.CategoryService;
-import br.com.daciosoftware.shop.user.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {

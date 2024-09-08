@@ -1,24 +1,23 @@
 package br.com.daciosoftware.shop.user.service;
 
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import br.com.daciosoftware.shop.modelos.dto.user.UserWithKeyDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import br.com.daciosoftware.shop.exceptions.exceptions.InvalidUserKeyException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserCpfExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserEmailExistsException;
 import br.com.daciosoftware.shop.exceptions.exceptions.UserNotFoundException;
 import br.com.daciosoftware.shop.modelos.dto.product.CategoryDTO;
 import br.com.daciosoftware.shop.modelos.dto.user.UserDTO;
+import br.com.daciosoftware.shop.modelos.dto.user.UserWithKeyDTO;
 import br.com.daciosoftware.shop.modelos.entity.product.Category;
 import br.com.daciosoftware.shop.modelos.entity.user.User;
 import br.com.daciosoftware.shop.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
